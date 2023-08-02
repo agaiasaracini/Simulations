@@ -629,7 +629,7 @@ reORBgen <- function(a=NULL, c=NULL,
         pl.b(mu, logRR=logRR, sigma_squared=sigma_squared, sigma_squared_imputed = sigma_squared_imputed) - pl.b(mle.b, logRR=logRR, sigma_squared=sigma_squared, sigma_squared_imputed = sigma_squared_imputed) + 1/2*qchisq(0.95, df=1)
       }
 
-      lowerBound.b <- uniroot(f.b, interval = c(-010, mle.b), logRR=logRR,
+      lowerBound.b <- uniroot(f.b, interval = c(-10, mle.b), logRR=logRR,
                               sigma_squared=sigma_squared,
                               sigma_squared_imputed=sigma_squared_imputed)$root
       upperBound.b <- uniroot(f.b, interval = c(mle.b, 10), logRR=logRR,
@@ -893,7 +893,7 @@ reORBgen <- function(a=NULL, c=NULL,
 
         return(list(mu_unadjusted = mle.u,
                     LR_mu_unadjusted_low = lowerBound.u,
-                    LR_mu_unadjusted_up = upperBound.y,
+                    LR_mu_unadjusted_up = upperBound.u,
 
                     mu_adjusted_harm = mle.h,
                     LR_mu_adjusted_low = lowerBound.h,

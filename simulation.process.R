@@ -5,6 +5,10 @@ library(doParallel)
 library(dplyr)
 library(doRNG)
 
+source("reORBgen.function.R")
+source("simulate_meta_data.function.R")
+source("reORBgen_hetfixed.function.R")
+
 # Set the number of cores to use
 num_cores <- 2
 registerDoParallel(cores = num_cores)
@@ -17,6 +21,7 @@ gamma <- 1.5
 tau_squared_values <- c(0.009, 0.039, 0.36)
 k_values <- c(5, 15, 30)
 mu_values <- c(0, 0.1, 0.2, 0.3, 0.4, 0.5)
+
 
 
 #### Simulation ########
