@@ -85,7 +85,7 @@ for (i in seq_len(nrow(parameters))) {
       true.SE = NULL,
       LR.CI = TRUE,
       selection.benefit = "Copas.oneside",
-      opt_method = "Nelder-Mead",
+      opt_method = "L-BFGS-B", #changed
       low.risk = FALSE
     )
 
@@ -118,7 +118,7 @@ for (i in seq_len(nrow(parameters))) {
       true.SE = NULL,
       LR.CI = TRUE,
       selection.benefit = "Copas.oneside",
-      opt_method = "Nelder-Mead",
+      opt_method = "L-BFGS-B", #changed
       low.risk = TRUE
     )
 
@@ -361,7 +361,7 @@ for (i in seq_len(nrow(parameters))) {
   }
 
   # save the seed as an attribute to the resulting object
-  attr(result_df, "seed") <- seed
+  #attr(result_df, "seed") <- seed
   #result_df
 
 
@@ -462,7 +462,7 @@ for (i in seq_len(nrow(parameters))) {
 
   # Calculate summary statistics adjusted WRONG
   parameters[i, "bias.adj.wrong"] <- mean(unlist(lapply(result_df, function(df) df$mu_adj_wrong))) - mu
-  parameters[i, "cov.adj.wrong"] <- sum(unlist(lapply(result_df, function(df) df$LR_adj_wrong == 1))) / n_datasets
+  parameters[i, "cov.adj.wrong"] <- sum(unlist(lapply(result_df, function(df) df$LR_adj_wrong_yes == 1))) / n_datasets
   parameters[i, "width.adj.wrong"] <- mean(unlist(lapply(result_df, function(df) df$width_adj_wrong)))
   parameters[i, "mse.adj.wrong"] <- mean(unlist(lapply(result_df, function(df) (df$mu_adj_wrong - mu) ^ 2)))
   parameters[i, "bias.tau2.adj.wrong.ML"] <- mean(unlist(lapply(result_df, function(df) df$tau2_ML_adj_wrong))) - tau_squared
@@ -470,13 +470,14 @@ for (i in seq_len(nrow(parameters))) {
 
   # Calculate summary statistics adjusted WRONG het fixed
   parameters[i, "bias.adj.wrong_hetfixed"] <- mean(unlist(lapply(result_df, function(df) df$mu_adj_wrong_hetfixed))) - mu
-  parameters[i, "cov.adj.wrong_hetfixed"] <- sum(unlist(lapply(result_df, function(df) df$LR_adj_wrong_hetfixed == 1))) / n_datasets
+  parameters[i, "cov.adj.wrong_hetfixed"] <- sum(unlist(lapply(result_df, function(df) df$LR_adj_wrong_yes_hetfixed == 1))) / n_datasets
   parameters[i, "width.adj.wrong_hetfixed"] <- mean(unlist(lapply(result_df, function(df) df$width_adj_wrong_hetfixed)))
   parameters[i, "mse.adj.wrong_hetfixed"] <- mean(unlist(lapply(result_df, function(df) (df$mu_adj_wrong_hetfixed - mu) ^ 2)))
 
 
+  attr(parameters, "seed") <- seed
 
 }
 
 #relative file path
-write.csv(parameters, "~/Simulations_new.csv")
+#write.csv(parameters, "~/Simulations_new.csv")
