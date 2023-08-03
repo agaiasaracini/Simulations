@@ -15,7 +15,7 @@ num_cores <- 2
 registerDoParallel(cores = num_cores)
 
 # Define number of data sets to generate
-n_datasets <- 2
+n_datasets <- 10
 
 #Parameter values
 parameters <- expand.grid(
@@ -85,7 +85,7 @@ for (i in seq_len(nrow(parameters))) {
       true.SE = NULL,
       LR.CI = TRUE,
       selection.benefit = "Copas.oneside",
-      opt_method = "L-BFGS-B", #changed
+      opt_method = "L-BFGS-B", #changed from Nelder-Mead to L-BFGS-B
       low.risk = FALSE
     )
 
@@ -118,7 +118,7 @@ for (i in seq_len(nrow(parameters))) {
       true.SE = NULL,
       LR.CI = TRUE,
       selection.benefit = "Copas.oneside",
-      opt_method = "L-BFGS-B", #changed
+      opt_method = "L-BFGS-B", #changed from Nelder-Mead to L-BFGS-B
       low.risk = TRUE
     )
 
@@ -480,4 +480,4 @@ for (i in seq_len(nrow(parameters))) {
 }
 
 #relative file path
-#write.csv(parameters, "~/Simulations_new.csv")
+write.csv(parameters, "~/Simulations_new.csv")
