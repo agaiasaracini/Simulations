@@ -219,7 +219,12 @@ reORBgen <- function(a=NULL, c=NULL,
   f.u <- function(params, logRR, sigma_squared) {
     mu <- params[1]
     tau_squared <- params[2]
+    if (tau_squared < 0 ){
+      - Inf
+    } else {
+
     -(1/2)*sum(log(sigma_squared + tau_squared) + ((logRR - mu)^2)/(sigma_squared + tau_squared))
+    }
   }
 
   #Set initial values for mu and tau_squared
@@ -267,7 +272,9 @@ reORBgen <- function(a=NULL, c=NULL,
       mu <- params[1]
       tau_squared <- params[2]
 
-
+      if(tau_squared < 0){
+        - Inf
+      } else {
 
       #The contribution from the reported studies is always present
       -(1/2)*sum(log(sigma_squared + tau_squared) + ((logRR - mu)^2)/(sigma_squared + tau_squared)) +
@@ -338,6 +345,8 @@ reORBgen <- function(a=NULL, c=NULL,
         } else {
           0  # Return 0 if sigma_squared_imputed is empty
         }
+
+      }
 
 
     }
@@ -430,7 +439,7 @@ reORBgen <- function(a=NULL, c=NULL,
             #log-lik contribution
             sum(log(sapply(sigma_squared_imputed, function(sigma_sq_imputed) {
               integrate(function(y) integrand(y, mu.REML, tau_squared, sigma_sq_imputed, z_alpha),
-                        lower = -20, upper = 20, subdivisions = 200, stop.on.error=FALSE)$value
+                        lower = -10, upper = 10, subdivisions = 200, stop.on.error=FALSE)$value
             })))
 
           } else if (sel.ben == "Sigmoid.cont") {
@@ -453,7 +462,7 @@ reORBgen <- function(a=NULL, c=NULL,
             #log-lik contribution
             sum(log(sapply(sigma_squared_imputed, function(sigma_sq_imputed) {
               integrate(function(y) integrand(y, mu.REML, tau_squared, sigma_sq_imputed, z_alpha),
-                        lower = -20, upper = 20, subdivisions = 200, stop.on.error=FALSE)$value
+                        lower = -10, upper = 10, subdivisions = 200, stop.on.error=FALSE)$value
             })))
 
           } else {
@@ -561,7 +570,7 @@ reORBgen <- function(a=NULL, c=NULL,
               #log-lik contribution
               sum(log(sapply(sigma_squared_imputed, function(sigma_sq_imputed) {
                 integrate(function(y) integrand(y, mu, tau_squared, sigma_sq_imputed, z_alpha),
-                          lower = -20, upper = 20, subdivisions = 200, stop.on.error=FALSE)$value
+                          lower = -10, upper = 10, subdivisions = 200, stop.on.error=FALSE)$value
               })))
 
             } else if (sel.ben == "Sigmoid.cont") {
@@ -584,7 +593,7 @@ reORBgen <- function(a=NULL, c=NULL,
               #log-lik contribution
               sum(log(sapply(sigma_squared_imputed, function(sigma_sq_imputed) {
                 integrate(function(y) integrand(y, mu, tau_squared, sigma_sq_imputed, z_alpha),
-                          lower = -20, upper = 20, subdivisions = 200, stop.on.error=FALSE)$value
+                          lower = -10, upper = 10, subdivisions = 200, stop.on.error=FALSE)$value
               })))
 
             } else {
@@ -629,7 +638,7 @@ reORBgen <- function(a=NULL, c=NULL,
         pl.b(mu, logRR=logRR, sigma_squared=sigma_squared, sigma_squared_imputed = sigma_squared_imputed) - pl.b(mle.b, logRR=logRR, sigma_squared=sigma_squared, sigma_squared_imputed = sigma_squared_imputed) + 1/2*qchisq(0.95, df=1)
       }
 
-      lowerBound.b <- uniroot(f.b, interval = c(-010, mle.b), logRR=logRR,
+      lowerBound.b <- uniroot(f.b, interval = c(-10, mle.b), logRR=logRR,
                               sigma_squared=sigma_squared,
                               sigma_squared_imputed=sigma_squared_imputed)$root
       upperBound.b <- uniroot(f.b, interval = c(mle.b, 10), logRR=logRR,
@@ -893,7 +902,7 @@ reORBgen <- function(a=NULL, c=NULL,
 
         return(list(mu_unadjusted = mle.u,
                     LR_mu_unadjusted_low = lowerBound.u,
-                    LR_mu_unadjusted_up = upperBound.y,
+                    LR_mu_unadjusted_up = upperBound.u,
 
                     mu_adjusted_harm = mle.h,
                     LR_mu_adjusted_low = lowerBound.h,
