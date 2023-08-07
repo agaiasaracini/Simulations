@@ -11,11 +11,11 @@ source("reORBgen_hetfixed.function.R")
 
 
 # Set the number of cores to use
-num_cores <- 2
+num_cores <- 120
 registerDoParallel(cores = num_cores)
 
 # Define number of data sets to generate
-n_datasets <- 2
+n_datasets <- 1000
 
 #Parameter values
 parameters <- expand.grid(
@@ -474,10 +474,10 @@ for (i in seq_len(nrow(parameters))) {
   parameters[i, "width.adj.wrong_hetfixed"] <- mean(unlist(lapply(result_df, function(df) df$width_adj_wrong_hetfixed)))
   parameters[i, "mse.adj.wrong_hetfixed"] <- mean(unlist(lapply(result_df, function(df) (df$mu_adj_wrong_hetfixed - mu) ^ 2)))
 
-
-  attr(parameters, "seed") <- seed
-
 }
 
+attr(parameters, "seed") <- seed
+attr(parameters, "sessionInfo") <- sessionInfo()
+
 #relative file path
-write.csv(parameters, "~/Simulations_new.csv")
+saveRDS(parameters, file = "./Simulations_new.rds")
